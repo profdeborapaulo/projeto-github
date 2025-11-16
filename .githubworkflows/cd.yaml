@@ -24,8 +24,11 @@ jobs:
       - name: Fazer upload dos arquivos
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./
+          path: ./src
 
       - name: Deploy no GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+
+
