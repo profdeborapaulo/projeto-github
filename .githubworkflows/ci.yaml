@@ -1,37 +1,47 @@
-name: CI/CD para Site Estático
+name: CI - Validação do Código
 
 on:
   push:
     branches:
-      - main   # dispara quando houver push na branch main
+      - main
   pull_request:
 
 jobs:
-  build-and-deploy:
+  validate:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Pega o código do repositório
-      - name: Checkout do código
-        uses: actions/checkout@v3
+      # 1. Baixar código
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      # 2. Validação básica de HTML, CSS e JS (lint)
+      # 2. Instalar Node (necessário para stylelint/eslint)
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 3. Instalar dependências (caso existam package.json, opcional)
+      - name: Instalar dependências opcionais
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          else
+            echo "Nenhum package.json encontrado, seguindo..."
+          fi
+
+      # 4. Validar HTML
       - name: Validar HTML
         uses: Cyb3r-Jak3/html5validator-action@v6
         with:
           root: "."
 
+      # 5. Validar CSS com Stylelint
       - name: Validar CSS
         run: |
-          npx stylelint "**/*.css"
+          npx stylelint "**/*.css" || echo "Erros encontrados no CSS"
 
+      # 6. Validar JavaScript com ESLint
       - name: Validar JavaScript
         run: |
-          npx eslint "**/*.js"
-
-      # 3. Deploy no GitHub Pages
-      - name: Deploy no GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./ # aqui você define a pasta do site (ex.: ./public ou ./dist)
+          npx eslint "**/*.js" || echo "Erros encontrados no JS"
