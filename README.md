@@ -1,4 +1,4 @@
-# Pipeline CI/CD para Site Estático (GitHub Actions + GitHub Pages)
+#  Pipeline CI/CD para Site Estático (GitHub Actions + GitHub Pages)
 
 Este repositório demonstra como configurar **CI (Integração Contínua)** e **CD (Entrega Contínua)** usando GitHub Actions para projetos front-end simples (HTML, CSS e JavaScript).
 
@@ -6,19 +6,18 @@ O objetivo é ensinar boas práticas de automação, validação de código e pu
 
 ---
 
-# Estrutura da Automação
+#  Estrutura da Automação
 
-O projeto utiliza **dois workflows separados**, seguindo o padrão profissional de DevOps:
+O projeto utiliza **dois workflows separados**, seguindo o padrão profissional de DevOps.
 
 ---
 
 ## 1. CI — Integração Contínua (`ci.yml`)
 
-Arquivo em:
-.github/workflows/ci.yml
+Arquivo em:  
+`.github/workflows/ci.yml`
 
-
-### O que ele faz?
+###  O que ele faz?
 
 - Baixa o código do repositório  
 - Instala Node.js  
@@ -27,121 +26,97 @@ Arquivo em:
   - CSS (Stylelint)
   - JavaScript (ESLint)
 
-### Objetivo
+###  Objetivo
 
-Garantir a **qualidade do código** antes do deploy.  
-Se houver erros, o GitHub marca o PR/push como **falhou**.
+Garantir a **qualidade do código** antes do deploy.
 
 ---
 
-## 2. CD — Deploy Contínuo para GitHub Pages (`deploy.yml`)
+## 2. CD — Deploy Contínuo (`deploy.yml`)
 
-Arquivo em:
-.github/workflows/deploy.yml
+Arquivo em:  
+`.github/workflows/deploy.yml`
 
+###  Quando ele roda?
 
-### Quando ele roda?
+- Sempre que há **push na branch main**
 
-- Sempre que houver **push na branch `main`**
-
-### O que ele faz?
+###  O que ele faz?
 
 - Baixa o código  
 - Prepara o ambiente do GitHub Pages  
 - Envia os arquivos estáticos como artefato  
-- Publica automaticamente no seu site GitHub Pages
-
-### Onde o site fica disponível?
-https://profdeborapaulo.github.io/projeto-github/
+- Publica automaticamente  
 
 ---
 
-# Como Desenvolver no Projeto
+#  Como Desenvolver no Projeto
 
 ## 1. Clone o repositório
 
 ```bash
-git clone <url-do-repositório>
+git clone <url-do-repositorio>
 cd nome-do-projeto
+```
 
-2. Instale dependências (opcional)
+## 2. Instale dependências (opcional)
+
+```bash
 npm install
-Se não existir package.json, o CI vai tratar isso automaticamente.
+```
 
-3. Trabalhe normalmente no seu código
+## 3. Trabalhe normalmente
 
-modifique arquivos HTML, CSS, JS
+Edite os arquivos HTML, CSS e JS normalmente.
 
-4. Faça commit e push
+## 4. Commit e push
+
+```bash
 git add .
 git commit -m "Minha atualização"
 git push
+```
 
 ---
-## O que acontece após o push?
 
-CI valida
+#  Style Guide do Projeto
 
-Se passar → CI 
+##  HTML
+- Usar identação de 2 espaços  
+- Usar tags semânticas  
+- Fechar todas as tags  
 
-Se falhar → CI (deploy não é bloqueado, mas recomendado corrigir)
+##  CSS
+- Seletores simples  
+- Evitar IDs  
+- Usar classes padronizadas  
 
-CD publica o site automaticamente
+##  JavaScript
+- camelCase  
+- Funções pequenas  
+- const e let  
 
+---
 
-## Style Guide do Projeto
+#  Validação Local
 
-Para manter consistência, siga estas regras:
-
-1. HTML
-
-a. Usar identação de 2 espaços
-b. Preferir tags semânticas (header, section, article, footer)
-c. Fechar todas as tags
-
-2. CSS
-
-a. Seletores simples e claros
-b. Nada de IDs para estilizar
-c. Classes devem ser padronizadas
-
-.btn-primary
-.card-title
-.header-nav
-3. JavaScript
-
-a. Funções curtas e reutilizáveis
-b. Nome de variáveis em camelCase
-c. Evitar variáveis globais
-d. Usar sempre const e let (nunca var)
-
-## Validação Local
-
-Para testar antes de fazer push:
+```bash
 npx stylelint "**/*.css"
 npx eslint "**/*.js"
+```
 
-## Runbook — Como Resolver Problemas Comuns
-1. O CI falhou por erro de HTML
- -- Abra o log → ele mostra a linha do erro.
+---
 
-2. Stylelint acusou erro
-Normalmente é:
+#  Runbook
 
--- identação incorreta
--- espaçamento faltando
--- seletor inválido
+## 1. CI falhou por HTML  
+Abra o log para ver a linha do erro.
 
-3. ESLint acusou erro
-Pode ser:
+## 2. Stylelint erro  
+Indentação, espaçamento ou seletor inválido.
 
-a. variável não usada
-b. falta de ponto e vírgula
-c. função não declarada
+## 3. ESLint erro  
+Variável não usada, falta ponto e vírgula, função não declarada.
 
-4.  Deploy não atualizou o site
-Verifique:
-
-a. o workflow deploy.yml foi executado?
-b. houve erro em "Upload Pages artifact"?
-c. branch usada no Pages é a correta (github-pages automático do GitHub)?
+## 4. Deploy não atualiza  
+Verificar execução do workflow e branch do Pages.
